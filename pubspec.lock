@@ -345,6 +345,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
+  vibrate:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "0bf70dfffefd5c5df641ff8ce44964c3c3abdb8b"
+      url: "https://github.com/haru-ake/flutter_vibrate.git"
+    source: git
+    version: "0.0.2"
   watcher:
     dependency: transitive
     description:
