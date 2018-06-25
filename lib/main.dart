@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vibrate/vibrate.dart';
 
 void main() => runApp(new MyApp());
 
@@ -7,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Furueru',
       theme: new ThemeData(
         // This is the theme of your application.
         //
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new MyHomePage(title: 'Furueru'),
     );
   }
 }
@@ -43,16 +44,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _aitakute = '';
+  bool _canVibrate = true;
 
-  void _incrementCounter() {
+  @override
+  initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    bool canVibrate = await Vibrate.canVibrate;
+    setState(() {
+      _canVibrate = canVibrate;
+    });
+  }
+
+  void _furueru() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _aitakute += '震える';
+    });
+  }
+
+  void _furuenai() {
+    setState(() {
+      _aitakute += '震え...ない';
     });
   }
 
@@ -90,19 +111,25 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
-              'You have pushed the button this many times:',
+              '会いたくて 会いたくて',
             ),
             new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              '$_aitakute',
             ),
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
+        onPressed: _canVibrate
+            ? () {
+                Vibrate.vibrate();
+                _furueru();
+              }
+            : () {
+                _furuenai();
+              },
+        tooltip: '震える?',
+        child: new Icon(Icons.vibration),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
